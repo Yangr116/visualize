@@ -7,4 +7,5 @@ The main code is depedent to the mmdetection code from `mmdetection/mmdet/core/v
 ### How to use
 You should revise `main.py` to visualize annotations, which does not support `argparse` up to now.
 You can set the `name` to opt different annotation formats, including `COCO` and `xml`.
+
 The function to visualize detection results will be supported later.
