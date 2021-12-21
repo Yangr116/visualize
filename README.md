@@ -1,5 +1,5 @@
 # visualize
-This is a simple project relied on mmdet to visualize object detection results.
+This is a simple project relied on mmdet to visualize object detection annotations or results.
 
 ### Dependency
 The main code is depedent to the mmdetection code from `mmdetection/mmdet/core/visualization/image.py`. So you should install `mmdet` and `mmcv`
