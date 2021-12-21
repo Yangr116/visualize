@@ -108,12 +108,22 @@ def visualize_xml(xml_file, image_dir, save_dir, class_dict):
 
 
 def main(name, file, image_dir, save_dir, class_dict=None):
+    """
+    :param name: the annotation format
+    :param file: the directory to save xml files, the direct path to save the xml file
+                or the direct path to save the json file
+    :param image_dir: the directory to put images
+    :param save_dir: the directory to save visualized images
+    :param class_dict: needed only in the name == 'xml', it is a dict {'name': label_id}
+    :return: None
+    """
     if name == 'COCO':
         visualize_coco(json_file=file, image_dir=image_dir, save_dir=save_dir)
     elif name == 'xml':
         print(class_dict)
         assert class_dict is not None, 'class_dict should be not None in xml format'
         visualize_xml(xml_file=file, image_dir=image_dir, save_dir=save_dir, class_dict=class_dict)
+    return None
 
 
 if __name__ == '__main__':
