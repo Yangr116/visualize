@@ -32,6 +32,10 @@ def visualize_coco(json_file, image_dir, save_dir):
             if ann_info['image_id'] == image_info['id']:
                 gt_bboxes.append(ann_info['bbox'])
                 gt_labels.append(ann_info['category_id'])
+                
+        # jump the image without gt_bbox
+        if not gt_bboxes:
+            continue
 
         # convert the xywh2xyxy
         gt_bboxes = xywh2xyxy(np.array(gt_bboxes))
@@ -49,7 +53,6 @@ def visualize_coco(json_file, image_dir, save_dir):
         )
 
     return None
-
 
 def visualize_xml(xml_file, image_dir, save_dir, class_dict):
     """
