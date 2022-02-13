@@ -6,12 +6,14 @@ import numpy as np
 import os
 
 
-def visualize_coco(result_file, image_dir, save_dir):
+def visualize_coco(result_file, image_dir, save_dir, debug=False, special_img=None):
     """
     visualize the coco format annotations
     :param json_file: coco format annotations, json file
     :param image_dir: the directory to put images
     :param save_dir: the directory to save images
+    :param debug: use with special_img to visualize the special one
+    :param special_img: special image name
     :return: None
     """
     assert Path(result_file).exists(), 'result_file does not exist!'
@@ -26,6 +28,10 @@ def visualize_coco(result_file, image_dir, save_dir):
 
     for image_info in tqdm(images_info):
         image_name = image_info['file_name']
+        
+        if debug == True:
+            if image_name != special_img:
+                continue
 
         gt_bboxes, gt_labels = [], []
         for ann_info in anns_info:
@@ -51,7 +57,8 @@ def visualize_coco(result_file, image_dir, save_dir):
             show=True,
             out_file=str(save_dir.joinpath(image_name))
         )
-
+        if debug == True:
+            break
     return None
 
 def visualize_xml(xml_file, image_dir, save_dir, class_dict):
