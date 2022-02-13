@@ -6,7 +6,7 @@ import numpy as np
 import os
 
 
-def visualize_coco(json_file, image_dir, save_dir):
+def visualize_coco(result_file, image_dir, save_dir):
     """
     visualize the coco format annotations
     :param json_file: coco format annotations, json file
@@ -14,7 +14,7 @@ def visualize_coco(json_file, image_dir, save_dir):
     :param save_dir: the directory to save images
     :return: None
     """
-    assert Path(json_file).exists(), 'result_file does not exist!'
+    assert Path(result_file).exists(), 'result_file does not exist!'
     assert Path(image_dir).exists(), 'image_dir does not exist!'
     assert Path(save_dir).exists(), 'save_dir does not exist!'
     assert Path(result_file).suffix == '.json', \
