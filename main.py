@@ -128,7 +128,7 @@ def main(name, file, image_dir, save_dir, class_dict=None):
     :return: None
     """
     if name == 'COCO':
-        visualize_coco(json_file=file, image_dir=image_dir, save_dir=save_dir)
+        visualize_coco(result_file=file, image_dir=image_dir, save_dir=save_dir)
     elif name == 'xml':
         print(class_dict)
         assert class_dict is not None, 'class_dict should be not None in xml format'
