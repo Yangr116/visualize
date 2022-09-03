@@ -4,6 +4,7 @@ from pathlib import Path
 from tqdm import tqdm
 import numpy as np
 import os
+from glob import glob
 
 
 def visualize_coco(result_file, image_dir, save_dir, debug=False, special_img=None):
@@ -73,13 +74,18 @@ def visualize_xml(xml_file, image_dir, save_dir, class_dict):
     assert Path(xml_file).exists(), 'result_file does not exist!'
     assert Path(image_dir).exists(), 'image_dir does not exist!'
     assert Path(save_dir).exists(), 'save_dir does not exist!'
+
+    # xml_file is a single file
     if Path(xml_file).is_file():
         xml_file = Path(xml_file)
         xml_dir = xml_file.parents
         xml_file_list = [xml_file.stem + xml_file.suffix]
-    else:
+    else: # xml_file is a dir
         xml_dir = Path(xml_file)
-        xml_file_list = os.listdir(xml_file)
+        xml_file_list = list(xml_dir.glob('*.xml'))
+
+    # get image suffix
+    img_suffix = "jpg"
 
     image_dir = Path(image_dir)
     save_dir = Path(save_dir)
@@ -87,10 +93,14 @@ def visualize_xml(xml_file, image_dir, save_dir, class_dict):
 
     for xml_file in tqdm(xml_file_list):
         # parse xml file to dict
-        xml_dict = read_xml_to_dict(str(xml_dir.joinpath(xml_file)))
+        # xml_dict = read_xml_to_dict(str(xml_dir.joinpath(xml_file)))
+        xml_dict = read_xml_to_dict(xml_file)
+
         gt_bboxes = []
         gt_labels = []
-        image_name = xml_dict['annotation']['filename']
+        image_name = xml_dict['annotation'].get('filename', None)
+        if image_name is None:
+            image_name = Path(xml_file).stem  + "." + img_suffix
 
         anns = xml_dict['annotation'].get('object', None)
         if anns is None:
@@ -113,7 +123,7 @@ def visualize_xml(xml_file, image_dir, save_dir, class_dict):
             show=True,
             out_file=str(save_dir.joinpath(image_name))
         )
-        break
+        # break
     return None
 
 
@@ -131,21 +141,16 @@ def main(name, file, image_dir, save_dir, class_dict=None):
         visualize_coco(result_file=file, image_dir=image_dir, save_dir=save_dir)
     elif name == 'xml':
         print(class_dict)
-        assert class_dict is not None, 'class_dict should be not None in xml format'
+        assert class_dict is not None, 'class_dict should not be None in xml format'
         visualize_xml(xml_file=file, image_dir=image_dir, save_dir=save_dir, class_dict=class_dict)
     return None
 
 
 if __name__ == '__main__':
-    # result_file = 'annotations/val1.json'
-    # image_dir = 'image'
-    # save_dir = 'visualize_data'
-    # name = 'COCO'
-    # main(name=name, file=result_file, image_dir=image_dir, save_dir=save_dir)
-
-    result_file = 'bbox'
+    result_file = 'annotations/val1.json'
     image_dir = 'image'
     save_dir = 'visualize_data'
-    name = 'xml'
+    name = 'COCO'
+    main(name=name, file=result_file, image_dir=image_dir, save_dir=save_dir)
     label_ids = { "scratch": 1, "bubble": 2, "pinhole": 3, "tin_ash": 4}
     main(name=name, file=result_file, image_dir=image_dir, save_dir=save_dir, class_dict=label_ids)
