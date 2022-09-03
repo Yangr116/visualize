@@ -1,0 +1,6 @@
+*.jpg
+*.png
+*.JPEG
+__pycache__/
+visualize_data/
+
